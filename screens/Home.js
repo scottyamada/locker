@@ -8,7 +8,8 @@ import {
 } from "react-native";
 import React from "react";
 import Tile from "../components/Tile";
-
+import LinearGradient from "react-native-linear-gradient";
+  
 const Home = (props) => {
   return (
     <View style={styles.container}>
