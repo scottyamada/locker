@@ -9,9 +9,37 @@ import Something from "./screens/Something";
 import Upload from "./screens/Upload";
 import Vault from "./screens/Vault";
 import Example from "./screens/Example";
+import React from "react";
+import { Button, SafeAreaView, Alert } from "react-native";
+import { storage } from "./firebase";
 
 export default function App() {
   const Stack = createNativeStackNavigator();
+
+  const formHandler = (e) => {
+    e.preventDefault();
+    const file = e.target[0].files[0];
+    uploadFiles(file);
+  };
+
+  const uploadFiles = (file) => {
+    //
+    if (!file) return;
+    const sotrageRef = ref(storage, `files/${file.name}`);
+    const uploadTask = uploadBytesResumable(sotrageRef, file);
+
+    uploadTask.on(
+      "state_changed",
+      (snapshot) => {},
+      (error) => console.log(error),
+      () => {
+        getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+          console.log("File available at", downloadURL);
+        });
+      }
+    );
+  };
+
   return (
     <NavigationContainer>
       <Stack.Navigator>
